@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context>
+    <Resource name="jdbc/shiroDemo" auth="Container"
+              type="javax.sql.DataSource"
+              driverClassName="com.mysql.jdbc.Driver"
+              url="jdbc:mysql://localhost:3306/shirodemo"
+              username="shiroDemo"
+              password="123456"
+              maxActive="50"
+              maxIdle="30"
+              maxWait="10000" />
+</Context>
