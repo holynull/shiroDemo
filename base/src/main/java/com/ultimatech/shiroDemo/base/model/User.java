@@ -1,4 +1,4 @@
-package com.ultimatech.shiroDemo.authmgr.model;
+package com.ultimatech.shirodemo.base.model;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
@@ -46,7 +46,7 @@ public class User {
         this.password = password;
     }
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "t_user_role", joinColumns = {@JoinColumn(name = "user_id")}, inverseJoinColumns = {@JoinColumn(name = "role_id")})
     public List<Role> getRoleList() {
         return roleList;
@@ -58,9 +58,8 @@ public class User {
 
     @Transient
     public Set<String> getRolesName() {
-        List<Role> roles = getRoleList();
         Set<String> set = new HashSet<String>();
-        for (Role role : roles) {
+        for (Role role : this.roleList) {
             set.add(role.getRolename());
         }
         return set;

@@ -21,6 +21,21 @@
         <url-pattern>/*</url-pattern>
     </filter-mapping>
 
+    <filter>
+        <filter-name>opensession</filter-name>
+        <filter-class>org.springframework.orm.hibernate4.support.OpenSessionInViewFilter</filter-class>
+        <!-- 当项目中没有事务控制的代码时， 这个过滤器中请添加如下代码 -->
+        <init-param>
+            <param-name>singleSession</param-name>
+            <param-value>false</param-value>
+        </init-param>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>opensession</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
@@ -68,7 +83,4 @@
         <error-code>500</error-code>
         <location>/html/500.html</location>
     </error-page>
-    <welcome-file-list>
-        <welcome-file>/login</welcome-file>
-    </welcome-file-list>
 </web-app>

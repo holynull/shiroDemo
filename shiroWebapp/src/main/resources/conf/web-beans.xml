@@ -10,30 +10,40 @@
 		http://www.springframework.org/schema/mvc 
 		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
 	<context:annotation-config />
-	<context:component-scan base-package="com.ultimatech.shirodemo.web" />
+	<bean id="ds-default" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName">
+			<value>java:comp/env/jdbc/shiroDemo</value>
+		</property>
+	</bean>
+
 	<!-- 配置shiro的过滤器工厂类，id- shiroFilter要和我们在web.xml中配置的过滤器一致 -->
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<!-- 调用我们配置的权限管理器 -->
 		<property name="securityManager" ref="securityManager"/>
 		<!-- 配置我们的登录请求地址 -->
-		<property name="loginUrl" value="/login.jsp"/>
+		<property name="loginUrl" value="/"/>
 		<!-- 配置我们在登录页登录成功后的跳转地址，如果你访问的是非/login地址，则跳到您访问的地址 -->
-		<property name="successUrl" value="/rest/user"/>
+		<property name="successUrl" value="/user"/>
 		<!-- 如果您请求的资源不再您的权限范围，则跳转到/403请求地址 -->
-		<property name="unauthorizedUrl" value="/403.html"/>
+		<property name="unauthorizedUrl" value="/html/403.html"/>
 		<!-- 权限配置 -->
 		<property name="filterChainDefinitions">
 			<value>
 				<!-- anon表示此地址不需要任何权限即可访问 -->
-				<!--/static/**=anon-->
+				/html/**=anon
+				/js/**=anon
+				/css/**=anon
+				/images/**=anon
+				/authc/login=anon
+				/login=anon
 				<!-- perms[user:query]表示访问此连接需要权限为user:query的用户 -->
-				/rest/user=perms[user:query]
+				<!--/user=perms[user:query]-->
 				<!-- roles[manager]表示访问此连接需要用户的角色为manager -->
-				/rest/user/add=roles[manager]
-				/rest/user/del/**=roles[admin]
-				/rest/user/edit/**=roles[manager]
+				/user/add=roles[manager]
+				/user/del/**=roles[admin]
+				/user/edit/**=roles[manager]
 				<!--所有的请求(除去配置的静态资源请求或请求地址为anon的请求)都要通过登录验证,如果未登录则跳到/login-->
-				/rest/** = authc
+				/** = authc
 			</value>
 		</property>
 	</bean>

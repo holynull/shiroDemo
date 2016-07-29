@@ -1,14 +1,16 @@
 package com.ultimatech.shirodemo.authmgr.realm;
 
-import com.ultimatech.shiroDemo.authmgr.model.Role;
-import com.ultimatech.shiroDemo.authmgr.model.User;
+import com.ultimatech.shirodemo.base.model.Role;
+import com.ultimatech.shirodemo.base.model.User;
 import com.ultimatech.shirodemo.authmgr.dao.IAuthDao;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.authz.SimpleAuthorizationInfo;
+import org.apache.shiro.cache.CacheManager;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -18,6 +20,11 @@ import java.util.List;
  */
 @Component("myRealm")
 public class MyRealm extends AuthorizingRealm {
+
+    @Autowired
+    public MyRealm(@Qualifier("shiroEncacheManager") CacheManager cacheManager) {
+        super(cacheManager);
+    }
 
     @Autowired
     private IAuthDao dao;

@@ -1,4 +1,4 @@
-package com.ultimatech.shiroDemo.authmgr.model;
+package com.ultimatech.shirodemo.base.model;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -30,14 +30,14 @@ public class Role {
     public void setRolename(String rolename) {
         this.rolename = rolename;
     }
-    @OneToMany(mappedBy="role")
+    @OneToMany(mappedBy="role",fetch = FetchType.LAZY)
     public List<Permission> getPermissionList() {
         return permissionList;
     }
     public void setPermissionList(List<Permission> permissionList) {
         this.permissionList = permissionList;
     }
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name="t_user_role",joinColumns={@JoinColumn(name="role_id")},inverseJoinColumns={@JoinColumn(name="user_id")})
     public List<User> getUserList() {
         return userList;
@@ -49,8 +49,7 @@ public class Role {
     @Transient
     public List<String> getPermissionsName(){
         List<String> list=new ArrayList<String>();
-        List<Permission> perlist=getPermissionList();
-        for (Permission per : perlist) {
+        for (Permission per : this.permissionList) {
             list.add(per.getPermissionname());
         }
         return list;

@@ -1,4 +1,4 @@
-package com.ultimatech.shiroDemo.base;
+package com.ultimatech.shirodemo.base;
 
 /**
  * 分页参数类

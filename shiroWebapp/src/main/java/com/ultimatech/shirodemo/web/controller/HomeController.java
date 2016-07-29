@@ -1,6 +1,6 @@
 package com.ultimatech.shirodemo.web.controller;
 
-import com.ultimatech.shiroDemo.authmgr.model.User;
+import com.ultimatech.shirodemo.base.model.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,5 +21,11 @@ public class HomeController {
     public String loginForm(Model model) {
         model.addAttribute("user", new User());
         return "/login.jsp";
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public String user(Model model) {
+        model.addAttribute("user", new User());
+        return "/user.jsp";
     }
 }

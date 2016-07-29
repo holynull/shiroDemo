@@ -1,4 +1,4 @@
-package com.ultimatech.shiroDemo.authmgr.model;
+package com.ultimatech.shirodemo.base.model;
 
 import javax.persistence.*;
 
@@ -27,7 +27,7 @@ public class Permission {
     public void setPermissionname(String permissionname) {
         this.permissionname = permissionname;
     }
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="role_id")
     public Role getRole() {
         return role;

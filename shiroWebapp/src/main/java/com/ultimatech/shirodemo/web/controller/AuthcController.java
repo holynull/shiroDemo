@@ -1,6 +1,6 @@
 package com.ultimatech.shirodemo.web.controller;
 
-import com.ultimatech.shiroDemo.authmgr.model.User;
+import com.ultimatech.shirodemo.base.model.User;
 import com.ultimatech.shirodemo.authmgr.service.IAuthService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;

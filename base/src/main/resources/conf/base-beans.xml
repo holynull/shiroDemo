@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
-	   xmlns:mvc="http://www.springframework.org/schema/mvc"
-	   xsi:schemaLocation="
-		http://www.springframework.org/schema/beans
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
 		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/context
 		http://www.springframework.org/schema/context/spring-context-3.0.xsd
 		http://www.springframework.org/schema/mvc
-		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd">
+		http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
 	<context:annotation-config />
-	<context:component-scan base-package="com.ultimatech.shirodemo.authmgr" />
+	<context:component-scan base-package="com.ultimatech.shirodemo.base" />
 	<context:component-scan base-package="com.ultimatech.shirodemo.test" />
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="ds-default"/>
@@ -19,7 +20,15 @@
 				<!--<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>-->
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
-				<!-- <prop key="default_schema">ssh</prop> -->
+				<prop key="hibernate.cache.region.factory_class">
+					org.hibernate.cache.SingletonEhCacheRegionFactory
+				</prop>
+				<!--<prop key="hibernate.cache.provider_class">org.hibernate.cache.EhCacheProvider</prop>-->
+				<prop key="hibernate.cache.use_second_level_cache">true</prop>
+				<prop key="hibernate.cache.use_query_cache">true</prop>
+				<prop key="hibernate.cache.use_structured_entries">true</prop>
+				<prop key="hibernate.cache.provider_configuration_file_resource_path">classpath:ehcache.xml</prop>
+				<prop key="hibernate.current_session_context_class">org.springframework.orm.hibernate4.SpringSessionContext</prop>
 			</props>
 		</property>
 		<!-- 如果使用配置文件 -->
@@ -27,10 +36,50 @@
             </list> </property> -->
 		<property name="annotatedClasses">
 			<list>
-				<value>com.ultimatech.shiroDemo.authmgr.model.User</value>
-				<value>com.ultimatech.shiroDemo.authmgr.model.Role</value>
-				<value>com.ultimatech.shiroDemo.authmgr.model.Permission</value>
+				<value>com.ultimatech.shirodemo.base.model.User</value>
+				<value>com.ultimatech.shirodemo.base.model.Role</value>
+				<value>com.ultimatech.shirodemo.base.model.Permission</value>
 			</list>
 		</property>
+	</bean>
+
+	<!-- 配置事务管理器 -->
+	<bean id="transactionManager"
+		  class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"/>
+	</bean>
+
+	<!-- 事务的传播特性 -->
+	<tx:advice id="txadvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<!--hibernate4必须配置为开启事务 否则 getCurrentSession()获取不到 -->
+			<tx:method name="*" propagation="REQUIRES_NEW" read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+
+	<!-- 那些类那些方法使用事务 -->
+	<aop:config>
+		<!-- 只对业务逻辑层实施事务 -->
+		<aop:pointcut id="allManagerMethod"
+					  expression="execution(* com.ultimatech.shirodemo.*.service.impl.*.*(..))"/>
+		<aop:pointcut id="shiroRealm"
+					  expression="execution(* com.ultimatech.shirodemo.authmgr.dao.impl.AuthDao.findByName(..))"/>
+		<!--<aop:pointcut id="msgMethod"-->
+		<!--expression="execution(* com.richfit.health.service.msg.*.*(..))" />-->
+		<!--<aop:pointcut id="updMethod"-->
+		<!--expression="execution(* com.richfit.health.service.update.*.*(..))" />-->
+		<aop:advisor pointcut-ref="allManagerMethod" advice-ref="txadvice"/>
+		<aop:advisor pointcut-ref="shiroRealm" advice-ref="txadvice"/>
+		<!--<aop:advisor pointcut-ref="msgMethod" advice-ref="txadvice" />-->
+		<!--<aop:advisor pointcut-ref="updMethod" advice-ref="txadvice" />-->
+	</aop:config>
+
+	<bean id="shiroEncacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
+		<property name="cacheManager" ref="ehCacheManager"/>
+	</bean>
+
+	<bean id="ehCacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml"></property>
+		<property name="shared" value="true"/>
 	</bean>
 </beans>

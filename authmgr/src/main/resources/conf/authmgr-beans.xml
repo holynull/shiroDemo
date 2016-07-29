@@ -16,8 +16,7 @@
         <!-- ref对应我们写的realm  myRealm -->
         <property name="realm" ref="myRealm"/>
         <!-- 使用下面配置的缓存管理器 -->
-        <property name="cacheManager" ref="cacheManager"/>
+        <property name="cacheManager" ref="shiroEncacheManager"/>
     </bean>
-    <bean id="cacheManager" class="org.apache.shiro.cache.MemoryConstrainedCacheManager"/>
     <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
 </beans>

@@ -1,4 +1,4 @@
-package com.ultimatech.shiroDemo.base;
+package com.ultimatech.shirodemo.base;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;

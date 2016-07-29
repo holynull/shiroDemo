@@ -1,7 +1,7 @@
 package com.ultimatech.shirodemo.authmgr.dao;
 
 
-import com.ultimatech.shiroDemo.authmgr.model.User;
+import com.ultimatech.shirodemo.base.model.User;
 
 /**
  * Created by 张乐平 on 7/28 0028.
