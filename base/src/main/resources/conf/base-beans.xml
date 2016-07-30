@@ -17,7 +17,7 @@
 		<property name="dataSource" ref="ds-default"/>
 		<property name="hibernateProperties">
 			<props>
-				<!--<prop key="hibernate.dialect">org.hibernate.dialect.OracleDialect</prop>-->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQL5Dialect</prop>
 				<prop key="hibernate.show_sql">true</prop>
 				<prop key="hibernate.hbm2ddl.auto">update</prop>
 				<prop key="hibernate.cache.region.factory_class">
@@ -38,7 +38,8 @@
 			<list>
 				<value>com.ultimatech.shirodemo.base.model.User</value>
 				<value>com.ultimatech.shirodemo.base.model.Role</value>
-				<value>com.ultimatech.shirodemo.base.model.Permission</value>
+				<value>com.ultimatech.shirodemo.base.model.MyPermission</value>
+				<value>com.ultimatech.shirodemo.base.model.AuthcMap</value>
 			</list>
 		</property>
 	</bean>

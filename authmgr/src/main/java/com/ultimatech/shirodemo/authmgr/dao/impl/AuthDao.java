@@ -1,5 +1,6 @@
 package com.ultimatech.shirodemo.authmgr.dao.impl;
 
+import com.ultimatech.shirodemo.base.model.AuthcMap;
 import com.ultimatech.shirodemo.base.model.User;
 import com.ultimatech.shirodemo.base.BaseDao;
 import com.ultimatech.shirodemo.authmgr.dao.IAuthDao;
@@ -27,5 +28,10 @@ public class AuthDao extends BaseDao implements IAuthDao {
         cri.add(Restrictions.eq("username", name));
         List<User> list = cri.list();
         return list != null && list.size() > 0 ? list.get(0) : null;
+    }
+
+    public List<AuthcMap> getAllAuthcMap() {
+        Criteria cri = this.getSessionFactory().getCurrentSession().createCriteria(AuthcMap.class);
+        return cri.list();
     }
 }
