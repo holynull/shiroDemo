@@ -14,9 +14,11 @@
 - Apache Tomcat 7+
 - 您熟练掌握的编辑工具，推荐使用InterlliJ IDEA 14+
 
-## 开始和[项目地址](http://git.oschina.net/holynyll/ShiroTest)
+## 开始
 
-我将整个教程的源码共享到git.oschina.net上，地址：[源代码地址](http://git.oschina.net/holynyll/ShiroTest).所以请你在开始之前注册一个git.oschina.net的帐号，你可以把项目fork到你的账户下，然后再clone到你的本地。下面我们将对项目进行一个简单说明。
+[项目地址git.oschina.net](http://git.oschina.net/holynyll/ShiroTest)
+
+[项目地址github.com](https://github.com/holynull/shiroDemo)
 
 ## 安全管理框架数据结构
 
