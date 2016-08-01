@@ -396,6 +396,20 @@ id|authcType|url|val
 
 我们这里实现了使用数据库配置访问控制数据，仅仅是为了开阔一下思路，并不推荐同时使用数据库配置和配置文件配置。
 
+### 关于permission语法
+
+我们可以参考[Understanding Permissions in Apache Shiro](http://shiro.apache.org/permissions.html)。你可能会发现好长的一篇文章啊！
+
+那么下面我就我个人的理解，简单对permission语法说明一下。
+
+在我们设计系统时，我们经过一系列的分析过程，会得到我们要实现的系统中存在哪些实体。例如，系统中存在用户（user），工作流（workflow）等实体。我们对这些实体进行抽象化，构成我们系统的基础模型。那么实体除了数据属性，例如，用户名（username），流程名称（flowname）等，还具备一些功能（function）或者叫做方法（method）的特征。我们使用OOP的思想来设计系统，那么我们抽象出来的实体就是我们所说的实体类，这些实体类代表了很多实体对象，例如，user类中，实际包含了tom,jack和rose，这些用户的一个子集就组成了一个数据域。那么我们的permission就是由系统实体和功能，以及一个数据域组成，格式就像这样：实体:功能:数据域。
+
+例如：
+perms[user:query:\*]——表示允许查询（query）用户（user实体类）所有（\*）对象的许可。
+perms[user:query,add,del,update]——表示允许查询（query）、添加（add）、删除（del）和更新（update）用户（user）所有对象的许可。
+perms[user:query:jack,rose]——表示允许查询（query）用户（user）中jack和rose数据的许可。
+perms[workflow:approve:order]——表示允许操作工作流程(workflow)中一个名叫order的流程的审批许可。
+
 ## 试验
 
 我们掌握了项目中集成Apache Shiro的方法后，将项目在IDEA中run或者debug起来。使用tom、jack和rose用户登录系统中，看看会有什么现象。当然用户、角色和permission数据都在db.sql文件中，导入数据库时已经一起导入了。你可以修改这些数据，以及他们之间的关系来体验Shiro的安全框架。
